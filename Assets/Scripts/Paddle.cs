@@ -6,9 +6,14 @@ using UnityEngine;
 public class Paddle : MonoBehaviour
 {
     public static Paddle instance;
+    public float _newSize = 2.0F;
+    [Space] 
+    public GameObject _center;
+    public GameObject _leftCap;
+    public GameObject _rightCap;
+    
     private Rigidbody _rb;
     private BoxCollider _bCol;
-    
     [SerializeField]
     private float _speed = 10.0F;
 
@@ -23,6 +28,7 @@ public class Paddle : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _bCol = GetComponent<BoxCollider>();
         
+        Resize(_newSize);
     }
     
     private void FixedUpdate()
@@ -54,5 +60,28 @@ public class Paddle : MonoBehaviour
                 ballRb.AddForce(new Vector3((Mathf.Abs(difference * 200)), vel, 0));
             }
         }
+    }
+
+    private void Resize(float xScale)
+    {
+        var initScale = _center.transform.localScale;
+        initScale.x = xScale;   
+        _center.transform.localScale = initScale;
+        
+        // resize left capacity
+        var positionLeft = _leftCap.transform.position;
+        var centerPos = _center.transform.position;
+        var leftCapacityPos = new Vector3(centerPos.x - (xScale / 2), positionLeft.y, positionLeft.z);
+        _leftCap.transform.position = leftCapacityPos;
+        
+        // resize right capacity
+        var positionRight = _rightCap.transform.position;
+        var rightCapacityPos = new Vector3(centerPos.x + (xScale / 2), positionRight.y, positionRight.z);
+        _rightCap.transform.position = rightCapacityPos;
+        
+        // collider scale
+        var colScale = initScale;
+        colScale.x += 0.6F * 2;
+        _bCol.size = colScale;
     }
 }
