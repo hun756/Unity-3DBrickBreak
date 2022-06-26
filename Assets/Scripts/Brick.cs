@@ -9,6 +9,7 @@ public class Brick : MonoBehaviour
     void Start()
     {
         // Add the brick game manager..!
+        GameManager._instance.AddBrick(gameObject);
     }
 
     public void TakeDamage()
@@ -17,8 +18,13 @@ public class Brick : MonoBehaviour
         if (_health <= 0)
         {
             // create particle
+            
             // report the game manager
+            GameManager._instance.RemoveBrick(gameObject);
+            
             // report the score manager
+            
+            
             // destroy brick
             Destroy(gameObject);
         }

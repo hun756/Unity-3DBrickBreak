@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Debug = System.Diagnostics.Debug;
 
 public class Paddle : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class Paddle : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _bCol = GetComponent<BoxCollider>();
         
-        Resize(_newSize);
+        ResetPaddlePosition();
     }
     
     private void FixedUpdate()
@@ -83,5 +84,13 @@ public class Paddle : MonoBehaviour
         var colScale = initScale;
         colScale.x += 0.6F * 2;
         _bCol.size = colScale;
+    }
+
+    public void ResetPaddlePosition()
+    {
+        var _transform = transform;
+        Debug.Assert(Camera.main != null, "Camera.main != null");
+        _transform.position = new Vector3(Camera.main.transform.position.x, _transform.position.y, 0);
+        Resize(_newSize);
     }
 }

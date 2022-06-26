@@ -10,12 +10,14 @@ public class Ball : MonoBehaviour
     
     [SerializeField]
     public static float _initialForce = 600.0F;
+
+    private bool _ballStarted;
+        
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
         
-        // debugging
-        _rb.AddForce(new Vector3(0 ,_initialForce, 0));    
+        // debugging   
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -25,9 +27,21 @@ public class Ball : MonoBehaviour
         {
             brick.TakeDamage();
         }
-        else
-        {
-            Debug.Log("Brick is null..!");
-        }
+    }
+
+    public void StartBall()
+    {
+        if (_ballStarted) return;
+        _rb.isKinematic = false;
+        _rb.AddForce(new Vector3(_initialForce ,_initialForce, 0));
+        _ballStarted = true;
+        
+        // parent back to the world...!
+        transform.SetParent(transform.parent.parent);
+    }
+
+    public bool BallStarted()
+    {
+        return _ballStarted;
     }
 }
