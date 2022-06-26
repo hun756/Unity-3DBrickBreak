@@ -1,14 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager _instance;
+
     public GameObject _ballPrefab;
     private List<GameObject> _ballList = new List<GameObject>();
     private List<GameObject> _brickList = new List<GameObject>();
+    public Text _lifesText;
     private int lifes;
 
     private void Awake()
@@ -22,6 +25,12 @@ public class GameManager : MonoBehaviour
         CreateBall();
         
         // ui update operations
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        _lifesText.text = "Lives : " + lifes.ToString("D");
     }
 
     private void Start()
@@ -35,6 +44,7 @@ public class GameManager : MonoBehaviour
         --lifes;
         
         // ui update operations
+        UpdateUI();
         
         // loose condition
         if (lifes == 0)
