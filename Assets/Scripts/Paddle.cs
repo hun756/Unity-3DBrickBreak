@@ -35,4 +35,24 @@ public class Paddle : MonoBehaviour
         
         _rb.MovePosition(transform.position + new Vector3(h, 0, 0) * (_speed * Time.fixedDeltaTime));
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+            Rigidbody ballRb = collision.gameObject.GetComponent<Rigidbody>();
+            float vel = Ball._initialForce;
+            var hitPoint = collision.contacts[0].point;
+            float difference = transform.position.x - hitPoint.x;
+
+            if (hitPoint.x < transform.position.x)
+            {
+                ballRb.AddForce(new Vector3(-(Mathf.Abs(difference * 200)), vel, 0));
+            }
+            else
+            {
+                ballRb.AddForce(new Vector3((Mathf.Abs(difference * 200)), vel, 0));
+            }
+        }
+    }
 }
